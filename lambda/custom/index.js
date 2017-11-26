@@ -10,14 +10,8 @@
 
 'use strict';
 const Alexa = require('alexa-sdk');
-
-//=========================================================================================================================================
-//TODO: The items below this comment need your attention.
-//=========================================================================================================================================
-
-//Replace with your app ID (OPTIONAL).  You can find this value at the top of your skill's page on http://developer.amazon.com.
-//Make sure to enclose your value in quotes, like this: const APP_ID = 'amzn1.ask.skill.bb4045e6-b3e8-4133-b650-72923c5980f1';
-const APP_ID = undefined;
+const FB = require('fb');
+const APP_ID = 'amzn1.ask.skill.8f85ba14-f361-4782-a049-790a7046cc04';
 
 const SKILL_NAME = 'Athena';
 const GET_FACT_MESSAGE = "Here's your fact: ";
@@ -28,10 +22,6 @@ const STOP_MESSAGE = 'Goodbye!';
 const data = [
     'Athena or Athene, often given the epithet Pallas , is the ancient Greek goddess of wisdom, craft, and war.In later times, Athena was syncretized with the Roman goddess Minerva.',
 ];
-
-//=========================================================================================================================================
-//Editing anything below this line might break your skill.
-//=========================================================================================================================================
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
@@ -49,6 +39,16 @@ const handlers = {
         const factIndex = Math.floor(Math.random() * factArr.length);
         const randomFact = factArr[factIndex];
         const speechOutput = GET_FACT_MESSAGE + randomFact;
+
+        FB.api('4', function (res) {
+          if(!res || res.error) {
+           console.log(!res ? 'error occurred' : res.error);
+           return;
+          }
+          console.log(res.id);
+          console.log(res.name);
+        });
+
 
         this.response.cardRenderer(SKILL_NAME, randomFact);
         this.response.speak(speechOutput);
