@@ -1,14 +1,14 @@
 {
   "deploy_settings": {
     "default": {
-      "skill_id": "",
+      "skill_id": "amzn1.ask.skill.8f85ba14-f361-4782-a049-790a7046cc04",
       "was_cloned": false,
       "merge": {
         "skillManifest": {
           "apis": {
             "custom": {
               "endpoint": {
-                "uri": "alexa_skill_athena"
+                "uri": "athena_lambda"
               }
             }
           }
