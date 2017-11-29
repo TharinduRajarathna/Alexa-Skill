@@ -17,6 +17,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "alexa-sdk": "^1.0.21",
+    "facebook-node": "0.0.3",
     "fb": "^2.0.0"
   }
 }

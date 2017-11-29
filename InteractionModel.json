@@ -25,6 +25,13 @@
         "give me something"
       ],
       "slots": []
+    },
+    {
+      "name": "ReadFacebookPostsIntent",
+      "samples": [
+        "read most recent posts on facebook"
+      ],
+      "slots": []
     }
   ]
 }

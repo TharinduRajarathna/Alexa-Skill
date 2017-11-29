@@ -9,16 +9,21 @@
  **/
 
 'use strict';
+
 const Alexa = require('alexa-sdk');
 const FB = require('fb');
-const APP_ID = 'amzn1.ask.skill.8f85ba14-f361-4782-a049-790a7046cc04';
 
+const APP_ID = 'amzn1.ask.skill.8f85ba14-f361-4782-a049-790a7046cc04';
 const SKILL_NAME = 'Athena';
+
+const EMPTY_ACCESS_TOKEN_MESSAGE = "There was an issue connecting to facebook. Please check if you have given this skill permission to read facebook posts.";
 const GET_FACT_MESSAGE = "Here's your fact: ";
 const HELP_MESSAGE = 'You can say tell me a fact, or, you can say exit... What can I help you with?';
 const HELP_REPROMPT = 'What can I help you with?';
+const TRY_AGAIN_MESSAGE = "Please try again later."
 const STOP_MESSAGE = 'Goodbye!';
 
+var accessToken = '';
 const data = [
     'Athena or Athene, often given the epithet Pallas , is the ancient Greek goddess of wisdom, craft, and war.In later times, Athena was syncretized with the Roman goddess Minerva.',
 ];
@@ -31,25 +36,67 @@ exports.handler = function(event, context, callback) {
 };
 
 const handlers = {
+    // 'NewSession': function() {
+        
+    //     console.log('new session ; access token: '+ this.event.session.user.accessToken);
+    //     accessToken = this.event.session.user.accessToken;
+    
+    //     if (accessToken) {
+    //         FB.setAccessToken(accessToken);
+    //         this.emit(':ask', HELP_MESSAGE, HELP_REPROMPT);
+    //     }
+    //     else {
+    //         // If we dont have an access token, we close down the skill. 
+    //         this.emit(':tellWithLinkAccountCard', "This skill requires you to link a Facebook account. Seems like you are not linked to a Facebook Account. Please link a valid Facebook account and try again.");
+    //     }
+    // },
     'LaunchRequest': function () {
+        //this.emit('NewSession');
         this.emit('GetNewFactIntent');
+    },
+    'ReadFacebookPostsIntent': function () {
+
+        //
+        // if (accessToken) {
+        // accessToken = this.event.session.user.accessToken;
+        // console.log('access token'+ accessToken);
+        // }
+        // if (accessToken) {
+        //     FB.setAccessToken(accessToken);
+        //     //this.emit(':ask', HELP_MESSAGE, HELP_REPROMPT);
+        // }else {
+        //     this.emit(':tellWithLinkAccountCard', "This skill requires you to link a Facebook account. Please link a valid Facebook account and try again.");
+        // }
+        //
+
+        var alexa = this;
+
+        FB.api("VirtusaCorp/posts", function (response) {
+            if (response && !response.error) {
+                if (response.data) {
+                    var output = "Here are recent posts";
+                    var max = 5;
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (i < max) {
+                            output += "Post " + (i + 1) + " " + response.data[i].message + ". ";
+                        }
+                    }
+                    alexa.emit(':ask', output+ ", What would you like to do next?",HELP_MESSAGE);
+                } else {
+                    // REPORT PROBLEM WITH PARSING DATA
+                }
+            } else {
+                // Handle errors here.
+                console.log(response.error);
+                this.emit(':tell', EMPTY_ACCESS_TOKEN_MESSAGE, TRY_AGAIN_MESSAGE);
+            }
+        });
     },
     'GetNewFactIntent': function () {
         const factArr = data;
         const factIndex = Math.floor(Math.random() * factArr.length);
         const randomFact = factArr[factIndex];
         const speechOutput = GET_FACT_MESSAGE + randomFact;
-
-        FB.api('4', function (res) {
-          if(!res || res.error) {
-           console.log(!res ? 'error occurred' : res.error);
-           return;
-          }
-          console.log(res.id);
-          console.log(res.name);
-        });
-
-
         this.response.cardRenderer(SKILL_NAME, randomFact);
         this.response.speak(speechOutput);
         this.emit(':responseReady');
