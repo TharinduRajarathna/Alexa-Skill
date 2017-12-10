@@ -38,26 +38,26 @@ exports.handler = function(event, context, callback) {
 };
 
 const handlers = {
-    'NewSession': function() {
-        var welcomeMessage = "Welcome to Athena";
-        welcomeMessage = 'welcomeMessage' +"<break time=\"1s\"/>"+ "<audio src='https://s3.amazonaws.com/my-ssml-samples/Flourish.mp3' />"+"<break time=\"1s\"/>";  
-        accessToken = this.event.session.user.accessToken;
-        if (accessToken) {
-            FB.setAccessToken(accessToken);
-            this.emit(':ask', welcomeMessage, HELP_REPROMPT);
-            // var cardTitle = "Welcome to Athena";
-            // var cardOutput = "Welcome" + "\n" + HELP_MESSAGE;
-            // var speechOutput = "<audio src=\"https://s3.amazonaws.com/scavengerhuntskill/updateIntro.mp3\" />";
-            // speechOutput = speechOutput + "<break time=\"1s\"/>";
-        }
-        else {
-            // If we dont have an access token, we close down the skill. 
-            this.emit(':tellWithLinkAccountCard', "This skill requires you to link a Facebook account. Seems like you are not linked to a Facebook Account. Please link a valid Facebook account and try again.");
-        }
-    },
+    // 'NewSession': function() {
+    //     var welcomeMessage = "Welcome to Athena";
+    //     welcomeMessage = 'welcomeMessage' +"<break time=\"1s\"/>"+ "<audio src='https://s3.amazonaws.com/my-ssml-samples/Flourish.mp3' />"+"<break time=\"1s\"/>";  
+    //     accessToken = this.event.session.user.accessToken;
+    //     if (accessToken) {
+    //         FB.setAccessToken(accessToken);
+    //         this.emit(':ask', welcomeMessage, HELP_REPROMPT);
+    //         // var cardTitle = "Welcome to Athena";
+    //         // var cardOutput = "Welcome" + "\n" + HELP_MESSAGE;
+    //         // var speechOutput = "<audio src=\"https://s3.amazonaws.com/scavengerhuntskill/updateIntro.mp3\" />";
+    //         // speechOutput = speechOutput + "<break time=\"1s\"/>";
+    //     }
+    //     else {
+    //         // If we dont have an access token, we close down the skill. 
+    //         this.emit(':tellWithLinkAccountCard', "This skill requires you to link a Facebook account. Seems like you are not linked to a Facebook Account. Please link a valid Facebook account and try again.");
+    //     }
+    // },
     'LaunchRequest': function () {
-        this.emit('NewSession');
-        //this.emit('GetNewFactIntent');
+        // this.emit('NewSession');
+        this.emit('GetNewFactIntent');
     },
     'ReadFacebookPostsIntent': function () {
 
