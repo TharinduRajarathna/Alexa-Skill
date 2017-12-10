@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "facts",
+      "invocationName": "athena",
       "intents": [
         {
           "name": "AMAZON.CancelIntent",

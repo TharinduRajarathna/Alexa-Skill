@@ -18,8 +18,10 @@ const SKILL_NAME = 'Athena';
 
 const EMPTY_ACCESS_TOKEN_MESSAGE = "There was an issue connecting to facebook. Please check if you have given this skill permission to read facebook posts.";
 const GET_FACT_MESSAGE = "Here's your fact: ";
-const HELP_MESSAGE = 'You can say tell me a fact, or, you can say exit... What can I help you with?';
+const HELP_MESSAGE = 'You can say tell me a fact, or, '+ facebookPosts + ' you can say exit... What can I help you with?';
 const HELP_REPROMPT = 'What can I help you with?';
+var repromptText = "If you have questions on this skill, please say Help.";
+const facebookPosts = "read most recent posts on facebook";
 const TRY_AGAIN_MESSAGE = "Please try again later."
 const STOP_MESSAGE = 'Goodbye!';
 
@@ -36,28 +38,31 @@ exports.handler = function(event, context, callback) {
 };
 
 const handlers = {
-    // 'NewSession': function() {
-        
-    //     console.log('new session ; access token: '+ this.event.session.user.accessToken);
-    //     accessToken = this.event.session.user.accessToken;
-    
-    //     if (accessToken) {
-    //         FB.setAccessToken(accessToken);
-    //         this.emit(':ask', HELP_MESSAGE, HELP_REPROMPT);
-    //     }
-    //     else {
-    //         // If we dont have an access token, we close down the skill. 
-    //         this.emit(':tellWithLinkAccountCard', "This skill requires you to link a Facebook account. Seems like you are not linked to a Facebook Account. Please link a valid Facebook account and try again.");
-    //     }
-    // },
+    'NewSession': function() {
+        var welcomeMessage = "Welcome to Athena";
+        welcomeMessage = 'welcomeMessage' +"<break time=\"1s\"/>"+ "<audio src='https://s3.amazonaws.com/my-ssml-samples/Flourish.mp3' />"+"<break time=\"1s\"/>";  
+        accessToken = this.event.session.user.accessToken;
+        if (accessToken) {
+            FB.setAccessToken(accessToken);
+            this.emit(':ask', welcomeMessage, HELP_REPROMPT);
+            // var cardTitle = "Welcome to Athena";
+            // var cardOutput = "Welcome" + "\n" + HELP_MESSAGE;
+            // var speechOutput = "<audio src=\"https://s3.amazonaws.com/scavengerhuntskill/updateIntro.mp3\" />";
+            // speechOutput = speechOutput + "<break time=\"1s\"/>";
+        }
+        else {
+            // If we dont have an access token, we close down the skill. 
+            this.emit(':tellWithLinkAccountCard', "This skill requires you to link a Facebook account. Seems like you are not linked to a Facebook Account. Please link a valid Facebook account and try again.");
+        }
+    },
     'LaunchRequest': function () {
-        //this.emit('NewSession');
-        this.emit('GetNewFactIntent');
+        this.emit('NewSession');
+        //this.emit('GetNewFactIntent');
     },
     'ReadFacebookPostsIntent': function () {
 
-        accessToken = this.event.session.user.accessToken;
-        FB.setAccessToken(accessToken);
+        // accessToken = this.event.session.user.accessToken;
+        // FB.setAccessToken(accessToken);
         
         var alexa = this;
         FB.api("VirtusaCorp/posts", function (response) {
@@ -106,3 +111,5 @@ const handlers = {
         this.emit(':responseReady');
     },
 };
+
+
