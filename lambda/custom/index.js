@@ -22,7 +22,7 @@ const HELP_MESSAGE = 'You can say tell me a fact, or, '+ facebookPosts + ' you c
 const HELP_REPROMPT = 'What can I help you with?';
 var repromptText = "If you have questions on this skill, please say Help.";
 const facebookPosts = "read most recent posts on facebook";
-const TRY_AGAIN_MESSAGE = "Please try again later."
+const TRY_AGAIN_MESSAGE = "Please try again later.";
 const STOP_MESSAGE = 'Goodbye!';
 
 var accessToken = '';
