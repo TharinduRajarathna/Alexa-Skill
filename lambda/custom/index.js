@@ -56,21 +56,10 @@ const handlers = {
     },
     'ReadFacebookPostsIntent': function () {
 
-        //
-        // if (accessToken) {
-        // accessToken = this.event.session.user.accessToken;
-        // console.log('access token'+ accessToken);
-        // }
-        // if (accessToken) {
-        //     FB.setAccessToken(accessToken);
-        //     //this.emit(':ask', HELP_MESSAGE, HELP_REPROMPT);
-        // }else {
-        //     this.emit(':tellWithLinkAccountCard', "This skill requires you to link a Facebook account. Please link a valid Facebook account and try again.");
-        // }
-        //
-
+        accessToken = this.event.session.user.accessToken;
+        FB.setAccessToken(accessToken);
+        
         var alexa = this;
-
         FB.api("VirtusaCorp/posts", function (response) {
             if (response && !response.error) {
                 if (response.data) {
