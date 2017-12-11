@@ -35,6 +35,13 @@
             "read most recent posts on facebook"
           ],
           "slots": []
+        },
+        {
+          "name": "ReadFacebookPostsOnSwrxIntent",
+          "samples": [
+            "read news on secureworks"
+          ],
+          "slots": []
         }
       ]
     }

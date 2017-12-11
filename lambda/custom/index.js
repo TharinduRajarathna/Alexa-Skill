@@ -87,6 +87,33 @@ const handlers = {
             }
         });
     },
+    'ReadFacebookPostsOnSwrxIntent': function () {
+        
+        var alexa = this;
+        FB.api("secureworks/posts", function (response) {
+            if (response && !response.error) {
+                if (response.data) {
+                    var output = "Here are recent posts" + "<break time=\"1s\"/>";
+                    var max = 5;
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (i < max) {
+                            output += "<break time=\"1s\"/>" + "Post " + 
+                             (i + 1) + 
+                            response.data[i].message.replace(/(?:https?|ftp):\/\/[\n\S]+/g, '')
+                              + ". ";
+                        }
+                    }
+                    alexa.emit(':ask', output+ ", What would you like to do next?",HELP_MESSAGE);
+                } else {
+                    // REPORT PROBLEM WITH PARSING DATA
+                }
+            } else {
+                // Handle errors here.
+                console.log(response.error);
+                this.emit(':tell', EMPTY_ACCESS_TOKEN_MESSAGE, TRY_AGAIN_MESSAGE);
+            }
+        });
+    },
     'GetNewFactIntent': function () {
         const factArr = data;
         const factIndex = Math.floor(Math.random() * factArr.length);
@@ -112,7 +139,9 @@ const handlers = {
         this.emit(':responseReady');
     },
     'SessionEndedRequest':function(){
-        this.emit(':tell', STOP_MESSAGE);
+        this.response.speak(STOP_MESSAGE);
+        this.emit(':responseReady');
+        //this.emit(':tell', STOP_MESSAGE);
     }
 };
 
